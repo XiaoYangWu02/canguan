@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it.canguan.mapper.LocationMapper">
+
+    <resultMap id="BaseResultMap" type="com.it.canguan.pojo.Location">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,status
+    </sql>
+    <select id="getAllLocation" resultType="com.it.canguan.pojo.Location">
+        select * from location
+    </select>
+    <select id="searchLocationByName" resultType="com.it.canguan.pojo.Location">
+        select * from location where name = #{confirmLocation}
+    </select>
+</mapper>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>餐馆点餐系统</title>
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+    }
+
+    .header {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-name {
+      margin: 0;
+      padding: 10px;
+      font-size: 24px;
+    }
+
+    .login a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .menu-list {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-list h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .search-form {
+      display: flex;
+    }
+
+    .search-form input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .search-form button {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .food {
+      border-bottom: 1px solid #ccc;
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .food h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+    }
+
+    .order-button {
+      background-color: #ff9800;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .out-of-stock {
+      /* 这里是缺货时的样式 */
+      color: #ff0000;
+    }
+
+  </style>
+
+</head>
+<body>
+<div class="header">
+  <h1 class="site-name">餐馆点餐系统</h1>
+  <div class="login">
+    <a th:if="${loggedIn}" th:href="@{/main/toUserCenter}">用户中心</a>
+    <a th:if="${loggedIn}"> | </a>
+    <a th:if="${loggedIn}" th:href="@{/account/logout}">注销</a>
+    <a th:unless="${loggedIn}" th:href="@{/main/toLogin}">登录</a>
+    <a th:unless="${loggedIn}"> | </a>
+    <a th:unless="${loggedIn}" th:href="@{/main/toRegister}">注册</a>
+  </div>
+</div>
+
+<div class="menu-list">
+  <h1>菜单</h1>
+  <form class="search-form" th:action="@{/main/searchFood}" method="post">
+    <input type="text" name="search" placeholder="搜索菜品">
+    <button type="submit">搜索</button>
+  </form>
+
+  <ul>
+    <li th:each="food : ${foodList}">
+      <div class="food">
+        <h3 th:text="${food.foodName}"></h3>
+        <div th:if="${food.foodStatus == '缺货'}" class="out-of-stock">
+          缺货
+        </div>
+        <p th:text="${food.foodAmount}"></p>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="footer">
+  <a th:href="@{/main/toLocationChoose}" class="order-button">立即点单</a>
+</div>
+
+<script th:inline="javascript">
+  var loginStatus = [[ ${right} ]] ;
+
+  // 处理登录状态
+  if (loginStatus != null) {
+    alert(loginStatus);
+  }
+</script>
+
+</body>
+</html>

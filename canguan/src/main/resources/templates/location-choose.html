@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>选择席位</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-name {
+            margin: 0;
+            padding: 10px;
+            font-size: 24px;
+        }
+
+        .login a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .seat-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .seat-button {
+            background-color: #3498db;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .seat-button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+            color: #888;
+        }
+
+        .selected {
+            background-color: #ff9800;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .order-button {
+            background-color: #ff9800;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+
+        .home-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* 样式用于下一步按钮 */
+        .next-button {
+            background-color: #ff9800;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .next-button:hover {
+            background-color: #f39c12;
+        }
+
+        .home-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .home-button:hover {
+            background-color: #2980b9;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1 class="site-name">餐馆点餐系统</h1>
+    <div class="login">
+        <a th:href="@{/main/toUserCenter}">用户中心</a>
+        <a th:href="@{/account/logout}">| 注销</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2>请选择一个席位</h2>
+
+    <form th:action="@{/main/chooseLocation}" method="post">
+        <div class="seat-list">
+            <!-- 使用 Thymeleaf 迭代循环生成席位按钮 -->
+            <button type="submit" th:each="location : ${locationList}"
+                    th:name="location"
+                    th:value="${location.name}"
+                    th:text="${location.name} + '(' + ${location.status} + ')'"
+                    class="seat-button"
+                    th:classappend="${selectedLocation == location.name} ? 'selected' : ''"
+                    th:disabled="${location.status == '有人'}">
+
+            </button>
+        </div>
+
+        <br><br>
+
+
+    </form>
+
+
+
+    <form th:action="@{/main/confirmTable}" method="post">
+        <button type="submit" th:name="confirmLocation" th:value="${selectedLocation}" class="next-button">下一步</button>
+    </form>
+
+    <a th:href="@{/main/index}" class="home-button">返回主页</a>
+
+</div>
+
+</body>
+</html>

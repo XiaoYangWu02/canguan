@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>等待页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-name {
+            margin: 0;
+            padding: 10px;
+            font-size: 24px;
+        }
+
+        .login a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .order-info {
+            margin-bottom: 20px;
+        }
+
+        .order-details {
+            margin-top: 20px;
+        }
+
+        .food-order {
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f7f7f7;
+        }
+
+        .home-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .refresh-button {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            margin-left: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .home-button:hover, .refresh-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1 class="site-name">餐馆点餐系统</h1>
+    <div class="login">
+        <a th:href="@{/main/toUserCenter}">用户中心</a>
+        <a th:href="@{/account/logout}">| 注销</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2>请耐心等待，服务员和厨师正在飞速制作</h2>
+
+    <div class="order-info">
+        <p>订单ID：<span th:text="${order.orderId}"></span></p>
+        <p>顾客ID：<span th:text="${order.customerId}"></span></p>
+        <p>订单价格：<span th:text="'$' + ${order.amount}"></span></p>
+        <p th:each="location : ${locationList}"  th:if="${location.id} == ${order.locationId}">座位：<span  th:text="${location.name}"></span></p>
+    </div>
+
+    <div class="order-details">
+        <h3>订单详细信息</h3>
+        <ul>
+            <li th:each="foodOrder : ${foodOrderList}" th:if="${foodOrder.orderId} == ${order.orderId}">
+                <div class="food-order">
+                    <p>菜品： <span th:each="food : ${foodList}" th:if="${food.id} == ${foodOrder.foodId}" th:text="${food.foodName}"></span></p>
+                    <p>状态： <span th:text="${foodOrder.foodStatus}"></span></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <a th:href="@{/main/index}" class="home-button">返回主页</a>
+    <a th:href="@{/main/toForWait}" class="refresh-button">刷新</a>
+</div>
+
+</body>
+</html>

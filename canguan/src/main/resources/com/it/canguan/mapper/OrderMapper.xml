@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.it.canguan.mapper.OrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.it.canguan.pojo.Order">
+            <id property="orderId" column="order_id" jdbcType="INTEGER"/>
+            <result property="customerId" column="customer_id" jdbcType="INTEGER"/>
+            <result property="amount" column="amount" jdbcType="DECIMAL"/>
+            <result property="locationId" column="location_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id,customer_id,amount,
+        location_id
+    </sql>
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="orderId" parameterType="com.it.canguan.pojo.Order">
+        insert into `order`(customer_id, amount, location_id) values (#{customerId}, #{amount}, #{locationId})
+    </insert>
+    <select id="searchOrderByCustomerId" resultType="com.it.canguan.pojo.Order">
+        select * from `order` where customer_id = #{customerId}
+    </select>
+</mapper>

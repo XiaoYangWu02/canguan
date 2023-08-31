@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>用户订单信息</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+    }
+
+    .header {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-name {
+      margin: 0;
+      padding: 10px;
+      font-size: 24px;
+    }
+
+    .login a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .order-table th, .order-table td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    .footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+    }
+
+    .return-button {
+      background-color: #ff9800;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="header">
+  <h1 class="site-name">餐馆点餐系统</h1>
+  <div class="login">
+    <a th:href="@{/main/toUserCenter}" style="color: white;">用户中心</a>
+    <span style="color: white;">|</span>
+    <a th:href="@{/account/logout}" style="color: white;">注销</a>
+  </div>
+</div>
+
+<div class="container">
+  <table class="order-table">
+    <tr>
+      <th>订单编号</th>
+      <th>订单金额</th>
+      <th>订单席位</th>
+      <th>详细信息</th>
+    </tr>
+    <tr th:each="order : ${orderList}">
+      <td th:text="${order.orderId}"></td>
+      <td th:text="${order.amount}"></td>
+      <td th:each="location : ${locationList}" th:if="${location.id} == ${order.locationId}" th:text="${location.name}"></td>
+      <td>
+        <table class="order-details-table">
+          <tr>
+            <th>菜品名称</th>
+            <th>菜品价格</th>
+            <th>菜品状态</th>
+          </tr>
+          <tr th:each="foodOrder : ${foodOrderList}" th:if="${foodOrder.orderId} == ${order.orderId}">
+            <td th:each="food : ${foodList}" th:if="${food.id} == ${foodOrder.foodId}" th:text="${food.foodName}"></td>
+            <td th:each="food : ${foodList}" th:if="${food.id} == ${foodOrder.foodId}" th:text="${food.foodAmount}"></td>
+            <td th:text="${foodOrder.foodStatus}"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="footer">
+  <a th:href="@{/main/toUserCenter}" class="return-button">返回用户中心</a>
+</div>
+</body>
+</html>
